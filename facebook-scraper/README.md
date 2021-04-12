@@ -1,6 +1,6 @@
 # Facebook Scraper
 
-Scrape Facebook public pages without an API key. Inspired by [twitter-scraper](https://github.com/kennethreitz/twitter-scraper).
+Scrape Facebook public pages without an API key. 
 
 
 ## Install
@@ -40,12 +40,10 @@ We’re headed to PAX East 3/28-3/31 with new games
 ## CLI usage
 
 ```sh
-$ facebook-scraper --filename nintendo_page_posts.csv --pages 10 nintendo
+$ python -m facebook_scraper -f dosiciety.csv -p 100 --group dosiciety --encoding utf-8
 ```
 
 Run `facebook-scraper --help` for more details on CLI usage.
-
-**Note:** If you get a `UnicodeEncodeError` try adding `--encoding utf-8`.
 
 
 ## Post example
@@ -83,24 +81,12 @@ Run `facebook-scraper --help` for more details on CLI usage.
 - Shares doesn't seem to work at the moment.
 - Group posts may be missing some fields like `time` and `post_url`.
 - Group scraping may return only one page and not work on private groups.
+- You can get 20 posts per page. (There are 18 posts on the first page. 1page - 18 post, 2page - 38post ...)
+- It takes 15 minutes to get 100 pages.(There will be 1998 posts.) 
 
 
 ## To-Do
 
-- Async support
-- ~~Image galleries~~ (`images` entry)
-- Profiles or post authors
-- ~~Comments~~ (with `options={'comments': True}`)
-
-
-## Alternatives and related projects
-
-- [facebook-post-scraper](https://github.com/brutalsavage/facebook-post-scraper). Has comments. Uses Selenium.
-- [facebook-scraper-selenium](https://github.com/apurvmishra99/facebook-scraper-selenium). "Scrape posts from any group or user into a .csv file without needing to register for any API access".
-- [Ultimate Facebook Scraper](https://github.com/harismuneer/Ultimate-Facebook-Scraper).  "Scrapes almost everything about a Facebook user's profile". Uses Selenium.
-- [Unofficial APIs](https://github.com/Rolstenhouse/unofficial-apis). List of unofficial APIs for various services, none for Facebook for now, but might be worth to check in the future.
-- [major-scrapy-spiders](https://github.com/talhashraf/major-scrapy-spiders). Has a profile spider for Scrapy.
-- [facebook-page-post-scraper](https://github.com/minimaxir/facebook-page-post-scraper). Seems abandoned.
-    - [FBLYZE](https://github.com/isaacmg/fb_scraper). Fork (?).
-- [RSSHub](https://github.com/DIYgod/RSSHub/blob/master/lib/routes/facebook/page.js). Generates an RSS feed from Facebook pages.
-- [RSS-Bridge](https://github.com/RSS-Bridge/rss-bridge/blob/master/bridges/FacebookBridge.php). Also generates RSS feeds from Facebook pages.
+- Extract to json file.
+- Import only the latest pages, not the number of pages to recall.
+- Filter posts to get.
