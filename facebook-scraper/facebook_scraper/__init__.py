@@ -126,7 +126,7 @@ def write_posts_to_csv(
     Args:
         account (str): Facebook account name e.g. "nike" or "nintendo"
         group (Union[str, int, None]): Facebook group id e.g. 676845025728409
-        filename (str): Filename, defaults to <account or group>_posts.csv
+        filename (str): Filename, defaults to <account or group>_posts.json
         encoding (str): Encoding for the output file, defaults to locale.getpreferredencoding()
         credentials (Optional[Tuple[str, str]]): Tuple of email and password to login before scraping. Defaults to scrape anonymously
         timeout (Optional[int]): Timeout for requests.
@@ -169,15 +169,17 @@ def write_posts_to_csv(
     keys = list_of_posts[0].keys()
 
     if filename is None:
-        filename = str(account or group) + "_posts.csv"
+        filename = str(account or group) + "_posts.json"
 
     if encoding is None:
         encoding = locale.getpreferredencoding()
 
-    with open(filename, 'w', encoding=encoding) as output_file:
-        dict_writer = csv.DictWriter(output_file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(list_of_posts)
+
+    with open(f"{filename}.json", "w", encoding='utf-8') as output_file:
+        json.dump(list_of_posts, output_file,  indent=4, ensure_ascii=False)
+
+
+    
 
 
 def enable_logging(level=logging.INFO):

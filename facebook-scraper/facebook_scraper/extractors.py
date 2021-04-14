@@ -89,6 +89,7 @@ class PostExtractor:
             'link': None,
             'user_id': None,
             'username': None,
+            'profile_picture': None,
             'source': None,
             'is_live': False,
             'factcheck': None,
@@ -118,6 +119,7 @@ class PostExtractor:
             self.extract_link,
             self.extract_user_id,
             self.extract_username,
+            self.extract_profile_picture,
             self.extract_video,
             self.extract_video_thumbnail,
             self.extract_video_id,
@@ -176,6 +178,10 @@ class PostExtractor:
         username = self.element.find('h3 strong a')
         return {'username': username[0].text} if len(username) > 0 else None
 
+    def extract_profile_picture(self) -> PartialPost:
+        profile_picture = self.element.find('h3 strong a')
+        return {'profile_picture': profile_picture.text} if len(profile_picture) > 0 else None
+
     # TODO: this method needs test for the 'has more' case and shared content
     def extract_text(self) -> PartialPost:
         # Open this article individually because not all content is fully loaded when skimming
@@ -216,7 +222,6 @@ class PostExtractor:
 
             # Separation between paragraphs
             paragraph_separator = '\n\n'
-
             text = paragraph_separator.join(itertools.chain(post_text, shared_text))
             post_text = paragraph_separator.join(post_text)
             shared_text = paragraph_separator.join(shared_text)
@@ -237,8 +242,9 @@ class PostExtractor:
         for page in page_insights.values():
             try:
                 timestamp = page['post_context']['publish_time']
+                time = datetime.fromtimestamp(timestamp)
                 return {
-                    'time': datetime.fromtimestamp(timestamp),
+                    'time': str(time),
                 }
             except (KeyError, ValueError):
                 continue
@@ -248,7 +254,7 @@ class PostExtractor:
         if date_element is not None:
             date = utils.parse_datetime(date_element.text, search=False)
             if date:
-                return {'time': date}
+                return {'time': str(date)}
             logger.debug("Could not parse date: %s", date_element.text)
         else:
             logger.warning("Could not find the abbr element for the date")
@@ -256,7 +262,7 @@ class PostExtractor:
         # Try to look in the entire text
         date = utils.parse_datetime(self.element.text)
         if date:
-            return {'time': date}
+            return {'time': str(date)}
 
         return None
 
@@ -458,7 +464,7 @@ class PostExtractor:
                 'likes': reactions.get("like"),
                 'reactions': reactions,
                 'reactors': reactors,
-                'fetched_time': datetime.now(),
+                'fetched_time': str(datetime.now()),
                 'w3_fb_url': w3_fb_url,
             }
 
@@ -478,7 +484,7 @@ class PostExtractor:
                         },
                         'comments': data['comment_count']['total_count'],
                         'w3_fb_url': data['url'],
-                        'fetched_time': datetime.now(),
+                        'fetched_time': str(datetime.now()),
                     }
         return None
 
@@ -584,6 +590,7 @@ class PostExtractor:
             'shared_time': shared_post.extract_time().get("time"),
             'shared_user_id': self.data_ft["original_content_owner_id"],
             'shared_username': shared_post.extract_username().get("username"),
+            'shared_profile_picture': shared_post.extract_profile_picture().get("profile_picture"),
             'shared_post_url': shared_post.extract_post_url().get("post_url"),
         }
 
@@ -642,7 +649,7 @@ class PostExtractor:
                 "commenter_name": name,
                 "commenter_meta": commenter_meta,
                 "comment_text": text,
-                "comment_time": date,
+                "comment_time": str(date),
             })
         return {"comments_full": result}
 
