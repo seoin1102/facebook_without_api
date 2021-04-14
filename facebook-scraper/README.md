@@ -38,12 +38,15 @@ We’re headed to PAX East 3/28-3/31 with new games
 
 
 ## CLI usage
-
+### 1. Run 'facebook_scraper.py'
 ```sh
 $ python -m facebook_scraper -f dosiciety.csv -p 100 --group dosiciety --encoding utf-8
 ```
 
 Run `facebook-scraper --help` for more details on CLI usage.
+
+### 2. Run 'send_data.py'
+
 
 
 ## Post example
@@ -87,6 +90,9 @@ Run `facebook-scraper --help` for more details on CLI usage.
 
 ## To-Do
 
-- Extract to json file.
-- Import only the latest pages, not the number of pages to recall.
-- Filter posts to get.
+- ~~Extract to json file.~~
+- ~~Import only the latest pages, not the number of pages to recall.~~
+- ~~Filter posts to get.~~
+- Get Comments.
+- Link Instagram to Facebook.
+- Import profile picture.
