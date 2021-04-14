@@ -242,9 +242,9 @@ class PostExtractor:
         for page in page_insights.values():
             try:
                 timestamp = page['post_context']['publish_time']
-                time = datetime.fromtimestamp(timestamp)
+                
                 return {
-                    'time': str(time),
+                    'time': timestamp,
                 }
             except (KeyError, ValueError):
                 continue
